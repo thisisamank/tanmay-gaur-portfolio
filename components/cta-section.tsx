@@ -9,7 +9,7 @@ export function CtaSection() {
         </h2>
         <p className="text-lg text-muted-foreground mb-8">Let's collaborate on your next project.</p>
         <Link
-          href="/contact"
+          href="/#contact"
           className="inline-block bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-3 rounded-lg font-semibold transition"
         >
           Get in Touch

@@ -187,7 +187,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
       {/* CTA */}
       <div className="border-t border-border pt-12 text-center">
         <p className="text-muted-foreground mb-6">Have a project in mind?</p>
-        <Link href="/contact">
+        <Link href="/#contact">
           <Button size="lg" className="bg-accent hover:bg-accent/90">
             Get in Touch
           </Button>

@@ -1,11 +1,11 @@
 "use client"
 
-import Image from "next/image"
-import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ChevronLeft } from "lucide-react"
 import type { Project } from "@/lib/types"
+import { ChevronLeft } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 
 interface ProjectDetailProps {
   project: Project
@@ -86,7 +86,7 @@ export function ProjectDetail({ project }: ProjectDetailProps) {
       {/* CTA */}
       <div className="border-t border-border pt-12 text-center">
         <p className="text-muted-foreground mb-6">Interested in working together?</p>
-        <Link href="/contact">
+        <Link href="/#contact">
           <Button size="lg" className="bg-accent hover:bg-accent/90">
             Get in Touch
           </Button>
