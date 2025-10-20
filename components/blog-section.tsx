@@ -19,9 +19,9 @@ export function BlogSection({ posts }: BlogSectionProps) {
   return (
     <section className="py-16 md:py-24 px-6 md:px-16 bg-background">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold mb-3 text-white">Latest Stories</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-3 text-white">Blogs</h2>
         <p className="text-base md:text-lg text-white/70 mb-10 max-w-3xl">
-          Insights, stories, and deep dives into filmmaking, production, and creative direction.
+          Unfiltered thoughts, bold takes, and behind-the-scenes stories from a mind that refuses to stay in line.
         </p>
 
         {/* Blog Grid - Netflix style */}
