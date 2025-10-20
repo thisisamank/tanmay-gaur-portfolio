@@ -90,57 +90,59 @@ export default function Home() {
             src="https://pub-f3452781d9104571a0e9e383ef6905ee.r2.dev/WhatsApp%20Image%202025-10-20%20at%2011.59.35%20PM.jpeg"
             alt="Tanmay Gaur"
             fill
-            className="object-cover"
+            className="object-cover will-change-auto"
             priority
+            quality={90}
+            sizes="100vw"
           />
-          {/* Gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+          {/* Netflix-style gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 max-w-3xl px-6 md:px-12 pb-20 md:pb-32">
-          <h1 className="text-6xl md:text-7xl font-bold mb-4 text-foreground text-balance">Tanmay Gaur</h1>
-          <p className="text-2xl md:text-3xl text-accent mb-2 font-semibold">
+        {/* Hero Content - Netflix style */}
+        <div className="relative z-10 w-full max-w-2xl px-6 md:px-16 pb-32 md:pb-40">
+          <h1 className="text-5xl md:text-7xl font-bold mb-4 text-white leading-tight">Tanmay Gaur</h1>
+          <p className="text-xl md:text-2xl text-white mb-3 font-medium">
             Multi-speciality Filmmaker / Media Producer
           </p>
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 italic max-w-2xl">
+          <p className="text-base md:text-lg text-white/80 mb-8 max-w-xl leading-relaxed">
             "The indifference between risky and bold."
           </p>
 
           {/* Netflix-style action buttons */}
-          <div className="flex gap-4 items-center flex-wrap">
+          <div className="flex gap-3 items-center flex-wrap">
             <a
               href="#portfolio"
-              className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-3 rounded font-semibold transition"
+              className="inline-flex items-center gap-2 bg-white hover:bg-white/90 text-black px-6 py-3 rounded font-bold transition-all transform hover:scale-105 shadow-lg"
             >
-              <Play size={20} />
+              <Play size={24} className="fill-black" />
               View Portfolio
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 bg-secondary/50 hover:bg-secondary/70 text-foreground px-8 py-3 rounded font-semibold transition"
+              className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-6 py-3 rounded font-bold transition-all transform hover:scale-105"
             >
               <Info size={20} />
-              Get in Touch
+              More Info
             </a>
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 md:py-32 px-6 md:px-12 max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-12">
-          {/* Tabs Navigation */}
+      {/* About Section - Netflix style */}
+      <section id="about" className="py-16 md:py-24 px-6 md:px-16 max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-4 gap-8 md:gap-12">
+          {/* Tabs Navigation - Netflix style */}
           <div className="md:col-span-1">
-            <div className="flex md:flex-col gap-2 md:gap-4 border-b md:border-b-0 md:border-r border-secondary pb-4 md:pb-0 md:pr-8">
+            <div className="flex md:flex-col gap-2 md:gap-3 sticky top-20">
               {["about", "skills", "employment"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 text-left font-semibold transition capitalize ${activeTab === tab
-                    ? "text-accent border-b-2 md:border-b-0 md:border-r-2 border-accent"
-                    : "text-muted-foreground hover:text-foreground"
+                  className={`px-4 py-2.5 text-left font-semibold transition-all capitalize rounded-md ${activeTab === tab
+                    ? "text-white bg-accent/90"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/30"
                     }`}
                 >
                   {tab}
@@ -150,16 +152,16 @@ export default function Home() {
           </div>
 
           {/* Content Area */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-3">
             {activeTab === "about" && (
-              <div className="space-y-6 animate-in fade-in duration-300">
-                <h2 className="text-4xl font-bold text-foreground">About</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed">
+              <div className="space-y-6 animate-in fade-in duration-500">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">About</h2>
+                <p className="text-base md:text-lg text-white/80 leading-relaxed">
                   What do you get when you mix two unconventional and stubborn forces? Thankfully, a more balanced yet
                   twice as unconventional and stubborn solution. Now what happens if it just so happens, that both
                   elements of the original mixture come from long lines of service in the Army?….
                 </p>
-                <p className="text-lg text-muted-foreground leading-relaxed">
+                <p className="text-base md:text-lg text-white/80 leading-relaxed">
                   Can someone who sounds vain, really be simply honest? How is it possible for someone to be both,
                   'outside the box' and 'by the book'? Why don't you dive deeper and find out? Let's talk.
                 </p>
@@ -167,22 +169,18 @@ export default function Home() {
             )}
 
             {activeTab === "skills" && (
-              <div className="space-y-6 animate-in fade-in duration-300">
-                <h2 className="text-4xl font-bold text-foreground">Skills</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  Don't worry, I am not just some boastful, yet another over-confident youngster. If I couldn't live up
-                  to my claims, I know better than to bluff people much more adept to negotiations than myself.
-                </p>
-                <p className="text-lg text-muted-foreground mb-6">
-                  Here's a few of my skills I have a proven track record in executing:
+              <div className="space-y-6 animate-in fade-in duration-500">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Skills & Expertise</h2>
+                <p className="text-base md:text-lg text-white/70 leading-relaxed mb-8">
+                  A proven track record across diverse areas of filmmaking and media production.
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {skills.map((skill) => (
                     <div
                       key={skill}
-                      className="bg-secondary/30 hover:bg-secondary/50 border border-secondary px-4 py-3 rounded text-center font-semibold transition"
+                      className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-accent/50 px-4 py-3 rounded-md transition-all text-center group"
                     >
-                      {skill}
+                      <p className="text-white/90 font-medium text-sm group-hover:text-white transition">{skill}</p>
                     </div>
                   ))}
                 </div>
@@ -190,19 +188,17 @@ export default function Home() {
             )}
 
             {activeTab === "employment" && (
-              <div className="space-y-6 animate-in fade-in duration-300">
-                <h2 className="text-4xl font-bold text-foreground">Employment History</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  I know, I know. A second generation who got everything served to him on a silver platter. But are you
-                  sure that's the case? You absolutely certain what you see as a risk isn't really the boldest hiring
-                  decision you'll make?? You know what they say about high risk situations?
+              <div className="space-y-6 animate-in fade-in duration-500">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Employment History</h2>
+                <p className="text-base md:text-lg text-white/70 leading-relaxed mb-8">
+                  Professional experience across production companies and media organizations.
                 </p>
-                <div className="space-y-6 mt-8">
+                <div className="space-y-4">
                   {employment.map((job, index) => (
-                    <div key={index} className="border-l-2 border-accent pl-6 py-2">
-                      <h3 className="text-xl font-bold text-foreground">{job.role}</h3>
-                      <p className="text-accent font-semibold">{job.company}</p>
-                      <p className="text-muted-foreground text-sm">{job.period}</p>
+                    <div key={index} className="bg-white/5 border-l-4 border-accent pl-6 pr-4 py-4 rounded-r-md hover:bg-white/10 transition-all">
+                      <h3 className="text-lg font-bold text-white mb-1">{job.role}</h3>
+                      <p className="text-accent font-semibold text-sm mb-1">{job.company}</p>
+                      <p className="text-white/50 text-xs">{job.period}</p>
                     </div>
                   ))}
                 </div>
@@ -212,26 +208,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portfolio Section */}
-      <section id="portfolio" className="py-20 md:py-32 px-6 md:px-12 bg-secondary/20">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Select Portfolio</h2>
-          <p className="text-lg text-muted-foreground mb-12 max-w-2xl">
-            Now, finally, what you're really here for, some of my top picks from the projects I've worked on. I suggest
-            you read the blogs section after this, I guarantee you'll notice what I can achieve is far greater than what
-            you've guessed so far.
+      {/* Portfolio Section - Netflix style */}
+      <section id="portfolio" className="py-16 md:py-24 px-6 md:px-16 bg-black">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-white">Featured Work</h2>
+          <p className="text-base md:text-lg text-white/70 mb-10 max-w-3xl leading-relaxed">
+            Explore my latest projects across commercials, documentaries, and visual storytelling.
           </p>
           {projectsLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
-              <span className="ml-3 text-muted-foreground">Loading videos...</span>
+            <div className="flex items-center justify-center py-20">
+              <div className="flex flex-col items-center gap-4">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-white/20 border-t-accent"></div>
+                <span className="text-white/60 text-sm">Loading...</span>
+              </div>
             </div>
           ) : videoProjects.length > 0 ? (
             <NetflixVideoPlayer projects={videoProjects} />
           ) : (
-            <div className="bg-card border border-border rounded-lg p-6 text-center">
-              <p className="text-muted-foreground">
-                No video projects available. Please add projects with video URLs to your Notion database.
+            <div className="bg-white/5 border border-white/10 rounded-md p-8 text-center">
+              <p className="text-white/60">
+                No video projects available. Add projects with video URLs to your Notion database.
               </p>
             </div>
           )}
@@ -240,49 +236,55 @@ export default function Home() {
 
       {!blogLoading && <BlogSection posts={blogPosts} />}
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 md:py-32 px-6 md:px-12">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Let's Talk</h2>
-          <p className="text-lg text-muted-foreground mb-12">
-            As I have said before, Let's Talk. Reach out through any of these channels.
+      {/* Contact Section - Netflix style */}
+      <section id="contact" className="py-16 md:py-24 px-6 md:px-16 bg-background">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Get in Touch</h2>
+          <p className="text-base md:text-lg text-white/70 mb-12 max-w-2xl">
+            Ready to bring your vision to life? Let's collaborate on your next project.
           </p>
 
-          <div className="flex flex-col md:flex-row gap-8 justify-center items-center md:items-start">
+          <div className="grid md:grid-cols-2 gap-6">
             <a
               href="tel:+919891946529"
-              className="flex items-center gap-3 bg-secondary/30 hover:bg-secondary/50 border border-secondary px-8 py-4 rounded-lg transition group"
+              className="flex items-center gap-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-6 py-5 rounded-md transition-all group"
             >
-              <Phone size={24} className="text-accent group-hover:scale-110 transition" />
-              <div className="text-left">
-                <p className="text-sm text-muted-foreground">Phone</p>
-                <p className="font-semibold text-foreground">+91 9891946529</p>
+              <div className="p-3 bg-accent/20 rounded-full group-hover:bg-accent/30 transition">
+                <Phone size={20} className="text-accent" />
+              </div>
+              <div className="text-left flex-1">
+                <p className="text-xs text-white/50 mb-1">Phone</p>
+                <p className="font-semibold text-white">+91 9891946529</p>
               </div>
             </a>
 
             <a
               href="mailto:tanmaygaur.gaurfilms@gmail.com"
-              className="flex items-center gap-3 bg-secondary/30 hover:bg-secondary/50 border border-secondary px-8 py-4 rounded-lg transition group"
+              className="flex items-center gap-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 px-6 py-5 rounded-md transition-all group"
             >
-              <Mail size={24} className="text-accent group-hover:scale-110 transition" />
-              <div className="text-left">
-                <p className="text-sm text-muted-foreground">Email</p>
-                <p className="font-semibold text-foreground">tanmaygaur.gaurfilms@gmail.com</p>
+              <div className="p-3 bg-accent/20 rounded-full group-hover:bg-accent/30 transition">
+                <Mail size={20} className="text-accent" />
+              </div>
+              <div className="text-left flex-1">
+                <p className="text-xs text-white/50 mb-1">Email</p>
+                <p className="font-semibold text-white text-sm">tanmaygaur.gaurfilms@gmail.com</p>
               </div>
             </a>
           </div>
 
-          <p className="text-muted-foreground text-sm mt-12 italic">
+          <p className="text-white/40 text-xs mt-12 text-center italic">
             Aman Kumar, Tussi Great ho, tumpe jaan nisaar. I promise I'll live up to you in a similar fashion in the
             future.
           </p>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-secondary py-8 px-6 md:px-12">
-        <div className="max-w-6xl mx-auto text-center text-muted-foreground text-sm">
-          <p>&copy; 2025 Tanmay Gaur. All rights reserved.</p>
+      {/* Footer - Netflix style */}
+      <footer className="border-t border-white/10 py-12 px-6 md:px-16 bg-black">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center">
+            <p className="text-white/40 text-sm">&copy; 2025 Tanmay Gaur. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </main>

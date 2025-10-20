@@ -1,9 +1,8 @@
 "use client"
 
+import type { BlogPost } from "@/lib/types"
 import Image from "next/image"
 import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
-import type { BlogPost } from "@/lib/types"
 
 interface BlogSectionProps {
   posts: BlogPost[]
@@ -18,39 +17,43 @@ export function BlogSection({ posts }: BlogSectionProps) {
   const displayPosts = posts.slice(0, 3)
 
   return (
-    <section className="py-20 md:py-32 px-6 md:px-12">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Latest Blogs</h2>
-        <p className="text-lg text-muted-foreground mb-12 max-w-2xl">
+    <section className="py-16 md:py-24 px-6 md:px-16 bg-background">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold mb-3 text-white">Latest Stories</h2>
+        <p className="text-base md:text-lg text-white/70 mb-10 max-w-3xl">
           Insights, stories, and deep dives into filmmaking, production, and creative direction.
         </p>
 
-        {/* Blog Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Blog Grid - Netflix style */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {displayPosts.map((post) => (
             <Link key={post.id} href={`/blog/${post.slug}`}>
-              <article className="group cursor-pointer h-full flex flex-col rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
+              <article className="group cursor-pointer transition-all duration-200">
                 {/* Image */}
-                <div className="relative h-48 bg-card overflow-hidden">
+                <div className="relative aspect-video bg-black rounded-md overflow-hidden mb-3">
                   <Image
                     src={post.thumbnail || "/placeholder.svg?height=192&width=400&query=blog"}
                     alt={post.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
+
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 flex flex-col bg-secondary/20 p-4">
-                  <h3 className="text-lg font-semibold text-foreground group-hover:text-accent transition mb-2 line-clamp-2">
+                <div className="px-1">
+                  <h3 className="text-base font-semibold text-white group-hover:text-white/90 transition mb-2 line-clamp-2">
                     {post.title}
                   </h3>
 
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2 flex-1">{post.excerpt}</p>
+                  <p className="text-sm text-white/60 mb-3 line-clamp-2">{post.excerpt}</p>
 
                   {/* Footer */}
-                  <div className="flex items-center justify-between">
-                    <time className="text-xs text-muted-foreground">
+                  <div className="flex items-center gap-3">
+                    <time className="text-xs text-white/40">
                       {new Date(post.date).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "short",
@@ -58,9 +61,10 @@ export function BlogSection({ posts }: BlogSectionProps) {
                       })}
                     </time>
                     {post.tags && post.tags.length > 0 && (
-                      <Badge variant="secondary" className="text-xs">
-                        {post.tags[0]}
-                      </Badge>
+                      <>
+                        <span className="text-white/40">•</span>
+                        <span className="text-xs text-white/50">{post.tags[0]}</span>
+                      </>
                     )}
                   </div>
                 </div>
@@ -69,13 +73,13 @@ export function BlogSection({ posts }: BlogSectionProps) {
           ))}
         </div>
 
-        {/* View All Link */}
+        {/* View All Link - Netflix style */}
         <div className="mt-12 text-center">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-3 rounded font-semibold transition"
+            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white px-8 py-3 rounded-md font-semibold transition-all"
           >
-            View All Articles
+            Explore More Stories
           </Link>
         </div>
       </div>

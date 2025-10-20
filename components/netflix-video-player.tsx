@@ -92,73 +92,76 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
                 ref={videoRef}
                 src={selectedProject.videoUrl!}
                 poster={selectedProject.thumbnailUrl || DEFAULT_THUMBNAIL}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover cursor-pointer"
                 muted={isMuted}
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
+                onClick={handlePlayPause}
+                preload="auto"
+                playsInline
               />
 
               {/* Netflix-style gradient overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
+              {/* Center Play/Pause Button - only show when not playing */}
               {!isPlaying && (
-                <button
-                  className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-all duration-300 cursor-pointer hover:bg-black/10 w-full h-full"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handlePlayPause()
-                  }}
-                  type="button"
-                  aria-label="Play video"
+                <div
+                  className="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/20 transition-all duration-300 pointer-events-none"
                 >
                   <Play size={64} className="text-white fill-white drop-shadow-lg" />
-                </button>
+                </div>
               )}
 
-              {/* Controls - visible on hover */}
-              <div className="absolute inset-0 flex flex-col justify-between p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+              {/* Controls - visible on hover - Netflix style */}
+              <div className="absolute inset-0 flex flex-col justify-between p-4 md:p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
                 {/* Top controls - Action buttons only */}
-                <div className="flex justify-end gap-3 pointer-events-auto">
+                <div className="flex justify-end gap-2 pointer-events-auto">
                   <button
                     onClick={handleMuteToggle}
-                    className="bg-black/60 hover:bg-black/80 p-3 rounded-full transition transform hover:scale-110"
+                    className="bg-black/70 hover:bg-black/90 backdrop-blur-sm p-2.5 md:p-3 rounded-full transition-all hover:scale-110 border border-white/10"
                     title={isMuted ? "Unmute" : "Mute"}
                   >
                     {isMuted ? (
-                      <VolumeX size={24} className="text-white" />
+                      <VolumeX size={20} className="text-white" />
                     ) : (
-                      <Volume2 size={24} className="text-white" />
+                      <Volume2 size={20} className="text-white" />
                     )}
                   </button>
                   <button
                     onClick={() => setIsModalOpen(true)}
-                    className="bg-black/60 hover:bg-black/80 p-3 rounded-full transition transform hover:scale-110"
+                    className="bg-black/70 hover:bg-black/90 backdrop-blur-sm p-2.5 md:p-3 rounded-full transition-all hover:scale-110 border border-white/10"
                     title="Fullscreen"
                   >
-                    <Maximize size={24} className="text-white" />
+                    <Maximize size={20} className="text-white" />
                   </button>
                 </div>
 
                 {/* Bottom controls */}
-                <div className="space-y-4 pointer-events-auto">
-                  {/* Progress bar */}
+                <div className="space-y-3 pointer-events-auto">
+                  {/* Progress bar - Netflix style */}
                   <div
-                    className="h-1 bg-white/30 hover:h-2 rounded-full cursor-pointer transition-all group/progress"
+                    className="h-1 bg-white/20 hover:h-1.5 rounded-full cursor-pointer transition-all relative group/progress"
                     onClick={handleProgressClick}
                   >
-                    <div className="h-full bg-accent rounded-full transition-all" style={{ width: `${progress}%` }} />
+                    <div
+                      className="h-full bg-red-600 rounded-full transition-all relative"
+                      style={{ width: `${progress}%` }}
+                    >
+                      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-red-600 rounded-full opacity-0 group-hover/progress:opacity-100 transition-opacity" />
+                    </div>
                   </div>
 
-                  {/* Play button */}
-                  <div className="flex items-center">
+                  {/* Control buttons */}
+                  <div className="flex items-center gap-3">
                     <button
                       onClick={handlePlayPause}
-                      className="bg-accent hover:bg-accent/90 p-3 rounded-full transition transform hover:scale-110"
+                      className="bg-white/90 hover:bg-white p-2.5 rounded-full transition-all hover:scale-110"
                     >
                       {isPlaying ? (
-                        <Pause size={28} className="text-white fill-white" />
+                        <Pause size={22} className="text-black" />
                       ) : (
-                        <Play size={28} className="text-white fill-white" />
+                        <Play size={22} className="text-black fill-black" />
                       )}
                     </button>
                   </div>
@@ -166,67 +169,67 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
               </div>
             </div>
 
-            {/* Navigation arrows */}
-            <button
-              onClick={handlePrevious}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 p-3 rounded-full transition opacity-0 group-hover:opacity-100 z-10"
-            >
-              <ChevronLeft size={28} className="text-white" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/60 hover:bg-black/80 p-3 rounded-full transition opacity-0 group-hover:opacity-100 z-10"
-            >
-              <ChevronRight size={28} className="text-white" />
-            </button>
+            {/* Navigation arrows - Netflix style */}
+            {projects.length > 1 && (
+              <>
+                <button
+                  onClick={handlePrevious}
+                  className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black/90 backdrop-blur-sm p-2 md:p-3 rounded-full transition-all opacity-0 group-hover:opacity-100 hover:scale-110 z-20 border border-white/10"
+                >
+                  <ChevronLeft size={24} className="text-white" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 bg-black/70 hover:bg-black/90 backdrop-blur-sm p-2 md:p-3 rounded-full transition-all opacity-0 group-hover:opacity-100 hover:scale-110 z-20 border border-white/10"
+                >
+                  <ChevronRight size={24} className="text-white" />
+                </button>
+              </>
+            )}
           </div>
 
           {/* Project Info Sidebar - Netflix style */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1 space-y-6 lg:sticky lg:top-24 lg:self-start">
             {/* Title and Metadata */}
             <div>
-              <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">{selectedProject.title}</h3>
-              <div className="flex flex-wrap items-center gap-3 text-muted-foreground text-sm mb-4">
-                <span className="font-semibold text-foreground">{selectedProject.year}</span>
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">{selectedProject.title}</h3>
+              <div className="flex flex-wrap items-center gap-2 mb-6">
+                <span className="text-green-400 font-semibold text-sm">{selectedProject.year}</span>
                 {selectedProject.category && (
-                  <>
-                    <span>•</span>
-                    <span className="px-2 py-1 bg-accent/20 text-accent rounded text-xs font-semibold">
-                      {selectedProject.category}
-                    </span>
-                  </>
+                  <span className="px-3 py-1 bg-white/10 text-white/90 rounded border border-white/20 text-xs font-medium uppercase tracking-wide">
+                    {selectedProject.category}
+                  </span>
                 )}
               </div>
             </div>
 
-            {/* Role */}
-            {selectedProject.role && (
-              <div>
-                <h4 className="text-sm font-semibold text-muted-foreground mb-2">Role</h4>
-                <p className="text-foreground">{selectedProject.role}</p>
-              </div>
-            )}
-
             {/* Description */}
             {selectedProject.description && (
               <div>
-                <h4 className="text-sm font-semibold text-muted-foreground mb-2">About</h4>
-                <p className="text-foreground leading-relaxed">{selectedProject.description}</p>
+                <p className="text-white/80 text-base leading-relaxed">{selectedProject.description}</p>
+              </div>
+            )}
+
+            {/* Role */}
+            {selectedProject.role && (
+              <div className="pt-4 border-t border-white/10">
+                <span className="text-white/50 text-sm">Role: </span>
+                <span className="text-white font-medium">{selectedProject.role}</span>
               </div>
             )}
 
             {/* Credits */}
             {selectedProject.credits && selectedProject.credits.length > 0 && (
-              <div>
-                <h4 className="text-sm font-semibold text-muted-foreground mb-2">Credits</h4>
-                <div className="flex flex-wrap gap-2">
+              <div className="pt-4 border-t border-white/10">
+                <h4 className="text-sm font-semibold text-white/50 mb-3">Cast & Crew</h4>
+                <div className="space-y-2">
                   {selectedProject.credits.map((credit, index) => (
-                    <span
+                    <div
                       key={index}
-                      className="px-3 py-1 bg-secondary/50 text-foreground rounded-full text-sm"
+                      className="text-white/80 text-sm"
                     >
                       {credit}
-                    </span>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -234,10 +237,10 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
           </div>
         </div>
 
-        {/* Video Grid */}
-        <div>
-          <h3 className="text-lg font-semibold text-foreground mb-4">More Videos</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {/* Video Grid - Netflix Episodes style */}
+        <div className="mt-12">
+          <h3 className="text-xl md:text-2xl font-bold text-white mb-6">More from Portfolio</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {projects.map((project, index) => (
               <div
                 key={project.id}
@@ -245,34 +248,43 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
                   setSelectedIndex(index)
                   setIsPlaying(false)
                 }}
-                className={`relative group cursor-pointer overflow-hidden rounded-lg transition transform hover:scale-105 ${index === selectedIndex ? "ring-2 ring-accent" : ""
+                className={`group cursor-pointer transition-all duration-200 ${index === selectedIndex ? "ring-2 ring-white rounded-md" : ""
                   }`}
               >
-                <div className="relative aspect-video bg-black">
+                <div className="relative aspect-video bg-black rounded-md overflow-hidden mb-3">
                   <video
                     src={project.videoUrl}
                     poster={project.thumbnailUrl || DEFAULT_THUMBNAIL}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     muted
+                    preload="metadata"
+                    playsInline
                   />
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                    <Play size={40} className="text-white fill-white opacity-0 group-hover:opacity-100 transition" />
+                  {/* Overlay with Play icon */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
+                    <Play size={48} className="text-white fill-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 drop-shadow-lg" />
                   </div>
 
-                  {/* Title and metadata overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-3">
-                    <p className="text-white text-sm font-semibold truncate mb-1">{project.title}</p>
-                    <div className="flex items-center gap-2 text-white/70 text-xs">
-                      <span>{project.year}</span>
-                      {project.category && (
-                        <>
-                          <span>•</span>
-                          <span>{project.category}</span>
-                        </>
-                      )}
-                    </div>
+                  {/* Index number - Netflix style */}
+                  <div className="absolute top-2 left-2 bg-black/80 backdrop-blur-sm px-2 py-1 rounded text-white text-xs font-bold">
+                    {index + 1}
+                  </div>
+                </div>
+
+                {/* Title and metadata */}
+                <div className="px-1">
+                  <h4 className="text-white font-semibold text-sm mb-1 line-clamp-1 group-hover:text-white/90 transition">
+                    {project.title}
+                  </h4>
+                  <div className="flex items-center gap-2 text-white/50 text-xs">
+                    <span>{project.year}</span>
+                    {project.category && (
+                      <>
+                        <span>•</span>
+                        <span>{project.category}</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
