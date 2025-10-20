@@ -78,13 +78,8 @@ export default function Home() {
     },
   ]
 
-  // Convert projects to video format for NetflixVideoPlayer
-  const videos = projects
-    .filter(project => project.videoUrl) // Only include projects with video URLs
-    .map(project => ({
-      title: project.title,
-      url: project.videoUrl!,
-    }))
+  // Filter projects that have video URLs
+  const videoProjects = projects.filter(project => project.videoUrl)
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -231,8 +226,8 @@ export default function Home() {
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
               <span className="ml-3 text-muted-foreground">Loading videos...</span>
             </div>
-          ) : videos.length > 0 ? (
-            <NetflixVideoPlayer videos={videos} />
+          ) : videoProjects.length > 0 ? (
+            <NetflixVideoPlayer projects={videoProjects} />
           ) : (
             <div className="bg-card border border-border rounded-lg p-6 text-center">
               <p className="text-muted-foreground">
