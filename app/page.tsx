@@ -92,8 +92,9 @@ export default function Home() {
             fill
             className="object-cover will-change-auto"
             priority
-            quality={90}
+            quality={75}
             sizes="100vw"
+            unoptimized={true}
           />
           {/* Netflix-style gradient overlays */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/40 to-transparent" />
@@ -211,10 +212,9 @@ export default function Home() {
       {/* Portfolio Section - Netflix style */}
       <section id="portfolio" className="py-16 md:py-24 px-6 md:px-16 bg-black">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-white">Featured Work</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-3 text-white">Portfolio</h2>
           <p className="text-base md:text-lg text-white/70 mb-10 max-w-3xl leading-relaxed">
-            Explore my latest projects across commercials, documentaries, and visual storytelling.
-          </p>
+            Now, finally, what you’re really here for, some of my top picks from the projects I’ve worked on. I suggest you read the blogs section after this, I guarantee you’ll notice what I can achieve is far greater than what you’ve guessed so far.          </p>
           {projectsLoading ? (
             <div className="flex items-center justify-center py-20">
               <div className="flex flex-col items-center gap-4">
@@ -272,10 +272,6 @@ export default function Home() {
             </a>
           </div>
 
-          <p className="text-white/40 text-xs mt-12 text-center italic">
-            Aman Kumar, Tussi Great ho, tumpe jaan nisaar. I promise I'll live up to you in a similar fashion in the
-            future.
-          </p>
         </div>
       </section>
 

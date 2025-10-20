@@ -46,8 +46,22 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
 
       {/* Featured Image */}
       {post.thumbnail && (
-        <div className="relative h-96 md:h-[500px] rounded-lg overflow-hidden mb-12">
-          <Image src={post.thumbnail || "/placeholder.svg"} alt={post.title} fill className="object-cover" priority />
+        <div className="relative w-full max-w-4xl mx-auto rounded-lg overflow-hidden mb-12">
+          <Image
+            src={post.thumbnail || "/placeholder.svg"}
+            alt={post.title}
+            width={1200}
+            height={675}
+            className="w-full h-auto object-cover"
+            priority
+            quality={75}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+            unoptimized={post.thumbnail?.includes('prod-files-secure.s3.us-west-2.amazonaws.com') ||
+              post.thumbnail?.includes('r2.dev') ||
+              post.thumbnail?.includes('upload.wikimedia.org')}
+          />
         </div>
       )}
 
@@ -135,9 +149,28 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
             if (block.type === "image") {
               const url = block.image?.file?.url || block.image?.external?.url
               if (!url) return null
+
+              // For external URLs, use unoptimized to avoid timeout issues
+              const isExternal = url.includes('prod-files-secure.s3.us-west-2.amazonaws.com') ||
+                url.includes('r2.dev') ||
+                url.includes('upload.wikimedia.org')
+
               return (
-                <div key={block.id || index} className="relative h-96 rounded-lg overflow-hidden my-8">
-                  <Image src={url} alt="Blog content image" fill className="object-cover" />
+                <div key={block.id || index} className="relative w-full max-w-4xl mx-auto rounded-lg overflow-hidden my-8">
+                  <Image
+                    src={url}
+                    alt="Blog content image"
+                    width={800}
+                    height={450}
+                    className="w-full h-auto object-cover"
+                    loading="lazy"
+                    quality={75}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 800px"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                    unoptimized={isExternal}
+                    priority={false}
+                  />
                 </div>
               )
             }

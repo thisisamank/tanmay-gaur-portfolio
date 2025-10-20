@@ -37,6 +37,12 @@ export function BlogSection({ posts }: BlogSectionProps) {
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    loading="lazy"
+                    quality={75}
+                    unoptimized={post.thumbnail?.includes('prod-files-secure.s3.us-west-2.amazonaws.com') ||
+                      post.thumbnail?.includes('r2.dev') ||
+                      post.thumbnail?.includes('upload.wikimedia.org')}
+                    priority={false}
                   />
 
                   {/* Hover overlay */}
