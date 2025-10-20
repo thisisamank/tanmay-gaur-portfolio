@@ -173,7 +173,8 @@ export default function Home() {
               <div className="space-y-6 animate-in fade-in duration-500">
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Skills & Expertise</h2>
                 <p className="text-base md:text-lg text-white/70 leading-relaxed mb-8">
-                  A proven track record across diverse areas of filmmaking and media production.
+                  Don’t worry, I am not just some boastful, yet another over-confident youngster. If I couldn’t live up to my claims, I know better than to bluff people much more adept to negotiations than myself.
+                  Here’s a few of my skills I have a proven track record in executing.
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {skills.map((skill) => (
@@ -190,10 +191,9 @@ export default function Home() {
 
             {activeTab === "employment" && (
               <div className="space-y-6 animate-in fade-in duration-500">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Employment History</h2>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">History of employment</h2>
                 <p className="text-base md:text-lg text-white/70 leading-relaxed mb-8">
-                  Professional experience across production companies and media organizations.
-                </p>
+                  I know, I know. A second generation who got everything served to him on a silver platter. But are you sure that’s the case? You absolutely certain what you see as a risk isn’t really the boldest hiring decision you’ll make?? You know what they say about high risk situations?                </p>
                 <div className="space-y-4">
                   {employment.map((job, index) => (
                     <div key={index} className="bg-white/5 border-l-4 border-accent pl-6 pr-4 py-4 rounded-r-md hover:bg-white/10 transition-all">
@@ -241,7 +241,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">Get in Touch</h2>
           <p className="text-base md:text-lg text-white/70 mb-12 max-w-2xl">
-            Ready to bring your vision to life? Let's collaborate on your next project.
+            As I have said before, Let’s Talk.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6">
