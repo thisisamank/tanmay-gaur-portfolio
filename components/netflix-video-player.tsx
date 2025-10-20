@@ -38,6 +38,16 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
     return () => video.removeEventListener("timeupdate", updateProgress)
   }, [])
 
+  // Pause video when switching to a different video
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.pause()
+      videoRef.current.currentTime = 0 // Reset video to beginning
+      videoRef.current.load() // Reload video to show poster
+      setIsPlaying(false)
+    }
+  }, [selectedIndex])
+
   const handlePlayPause = async () => {
     if (!videoRef.current) return
 
@@ -70,13 +80,23 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
   }
 
   const handlePrevious = () => {
+    // Pause current video before switching
+    if (videoRef.current) {
+      videoRef.current.pause()
+    }
     setSelectedIndex((prev) => (prev === 0 ? projects.length - 1 : prev - 1))
     setIsPlaying(false)
+    setProgress(0) // Reset progress to 0
   }
 
   const handleNext = () => {
+    // Pause current video before switching
+    if (videoRef.current) {
+      videoRef.current.pause()
+    }
     setSelectedIndex((prev) => (prev === projects.length - 1 ? 0 : prev + 1))
     setIsPlaying(false)
+    setProgress(0) // Reset progress to 0
   }
 
   return (
@@ -97,7 +117,7 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
                 onClick={handlePlayPause}
-                preload="auto"
+                preload="metadata"
                 playsInline
               />
 
@@ -245,8 +265,13 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
               <div
                 key={project.id}
                 onClick={() => {
+                  // Pause current video before switching
+                  if (videoRef.current) {
+                    videoRef.current.pause()
+                  }
                   setSelectedIndex(index)
                   setIsPlaying(false)
+                  setProgress(0) // Reset progress to 0
                 }}
                 className={`group cursor-pointer transition-all duration-200 ${index === selectedIndex ? "ring-2 ring-white rounded-md" : ""
                   }`}
