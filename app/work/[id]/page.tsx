@@ -1,9 +1,10 @@
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { Navigation } from "@/components/navigation"
 import { ProjectDetail } from "@/components/project-detail"
 import { portfolioData } from "@/lib/data"
-import { notFound } from "next/navigation"
+import type { Project } from "@/lib/types"
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>
@@ -48,7 +49,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     <main className="min-h-screen bg-background">
       <Navigation />
       <div className="pt-16">
-        <ProjectDetail project={project} />
+        <ProjectDetail project={project as Project} />
       </div>
       <Footer />
     </main>

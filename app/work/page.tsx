@@ -1,12 +1,13 @@
 "use client"
 
-import { useState } from "react"
-import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
+import { Navigation } from "@/components/navigation"
 import { ProjectGrid } from "@/components/project-grid"
 import { Button } from "@/components/ui/button"
-import { portfolioData } from "@/lib/data"
 import { PROJECT_CATEGORIES } from "@/lib/constants"
+import { portfolioData } from "@/lib/data"
+import type { Project } from "@/lib/types"
+import { useState } from "react"
 
 export default function WorkPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined)
@@ -48,7 +49,7 @@ export default function WorkPage() {
 
       {/* Projects Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <ProjectGrid projects={portfolioData.projects} selectedCategory={selectedCategory} />
+        <ProjectGrid projects={portfolioData.projects as Project[]} selectedCategory={selectedCategory} />
       </section>
 
       <Footer />

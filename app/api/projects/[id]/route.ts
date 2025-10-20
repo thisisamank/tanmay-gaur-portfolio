@@ -16,7 +16,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 
     const response: ApiResponse<Project> = {
       success: true,
-      data: project,
+      data: project as Project,
     }
 
     return Response.json(response)
