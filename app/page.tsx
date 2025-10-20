@@ -1,16 +1,18 @@
 "use client"
 
-import Image from "next/image"
-import { Mail, Phone, Play, Info } from "lucide-react"
-import { useState, useEffect } from "react"
-import { NetflixVideoPlayer } from "@/components/netflix-video-player"
 import { BlogSection } from "@/components/blog-section"
-import type { BlogPost } from "@/lib/types"
+import { NetflixVideoPlayer } from "@/components/netflix-video-player"
+import type { BlogPost, Project } from "@/lib/types"
+import { Info, Mail, Phone, Play } from "lucide-react"
+import Image from "next/image"
+import { useEffect, useState } from "react"
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("about")
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [blogLoading, setBlogLoading] = useState(true)
+  const [projects, setProjects] = useState<Project[]>([])
+  const [projectsLoading, setProjectsLoading] = useState(true)
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
@@ -27,7 +29,22 @@ export default function Home() {
       }
     }
 
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch("/api/projects")
+        const data = await response.json()
+        if (data.success && data.data) {
+          setProjects(data.data)
+        }
+      } catch (error) {
+        console.log("[v0] Failed to fetch projects:", error)
+      } finally {
+        setProjectsLoading(false)
+      }
+    }
+
     fetchBlogPosts()
+    fetchProjects()
   }, [])
 
   const skills = [
@@ -61,20 +78,13 @@ export default function Home() {
     },
   ]
 
-  const videos = [
-    {
-      title: "Statements and Statement List",
-      url: "https://pub-c0052b015a214c8584bf0cf89522c2ef.r2.dev/001.%20Statements%20and%20Statement%20List.mp4",
-    },
-    {
-      title: "Blocks Nested Scopes",
-      url: "https://pub-c0052b015a214c8584bf0cf89522c2ef.r2.dev/002.%20Blocks%20Nested%20Scopes.mp4",
-    },
-    {
-      title: "Different AST Formats",
-      url: "https://pub-c0052b015a214c8584bf0cf89522c2ef.r2.dev/003.%20Different%20AST%20Formats.mp4",
-    },
-  ]
+  // Convert projects to video format for NetflixVideoPlayer
+  const videos = projects
+    .filter(project => project.videoUrl) // Only include projects with video URLs
+    .map(project => ({
+      title: project.title,
+      url: project.videoUrl!,
+    }))
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -133,11 +143,10 @@ export default function Home() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-2 text-left font-semibold transition capitalize ${
-                    activeTab === tab
-                      ? "text-accent border-b-2 md:border-b-0 md:border-r-2 border-accent"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
+                  className={`px-4 py-2 text-left font-semibold transition capitalize ${activeTab === tab
+                    ? "text-accent border-b-2 md:border-b-0 md:border-r-2 border-accent"
+                    : "text-muted-foreground hover:text-foreground"
+                    }`}
                 >
                   {tab}
                 </button>
@@ -217,7 +226,20 @@ export default function Home() {
             you read the blogs section after this, I guarantee you'll notice what I can achieve is far greater than what
             you've guessed so far.
           </p>
-          <NetflixVideoPlayer videos={videos} />
+          {projectsLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent"></div>
+              <span className="ml-3 text-muted-foreground">Loading videos...</span>
+            </div>
+          ) : videos.length > 0 ? (
+            <NetflixVideoPlayer videos={videos} />
+          ) : (
+            <div className="bg-card border border-border rounded-lg p-6 text-center">
+              <p className="text-muted-foreground">
+                No video projects available. Please add projects with video URLs to your Notion database.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 

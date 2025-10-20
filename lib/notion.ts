@@ -69,23 +69,26 @@ async function getNotionHeaders() {
 export async function queryNotionDatabase(databaseId: string, filter?: unknown) {
   const headers = await getNotionHeaders()
 
+  const body: any = {}
+
+  if (filter) {
+    body.filter = filter
+  }
+
+  // Only add sorts if we're querying the blog database (which has Date property)
+  if (databaseId === process.env.NOTION_DATABASE_ID) {
+    body.sorts = [
+      {
+        property: "Date",
+        direction: "descending",
+      },
+    ]
+  }
+
   const response = await fetch(`https://api.notion.com/v1/databases/${databaseId}/query`, {
     method: "POST",
     headers,
-    body: JSON.stringify({
-      filter: filter || {
-        property: "Published",
-        checkbox: {
-          equals: true,
-        },
-      },
-      sorts: [
-        {
-          property: "Date",
-          direction: "descending",
-        },
-      ],
-    }),
+    body: JSON.stringify(body),
   })
 
   if (!response.ok) {
@@ -158,5 +161,39 @@ export async function getBlogPostBySlug(slug: string) {
     thumbnail: item.properties.Thumbnail?.files[0]?.file?.url || "/placeholder.svg",
     tags: item.properties.Tags?.multi_select?.map((tag: { name: string }) => tag.name) || [],
     blocks: blocks.results,
+  }
+}
+
+// Portfolio projects function (videos only)
+export async function getPortfolioProjects() {
+  const databaseId = process.env.NOTION_PROJECTS_DATABASE_ID
+  if (!databaseId) {
+    console.warn("NOTION_PROJECTS_DATABASE_ID is not set - returning empty projects")
+    return []
+  }
+
+  try {
+    const data = await queryNotionDatabase(databaseId)
+
+    return data.results.map((item: NotionDatabaseItem) => {
+      const properties = item.properties as any
+      return {
+        id: item.id,
+        title: properties.Title?.title?.[0]?.plain_text || "Untitled",
+        slug: properties.Slug?.rich_text?.[0]?.plain_text || "",
+        year: properties.Year?.number || new Date().getFullYear(),
+        role: properties.Role?.rich_text?.[0]?.plain_text || "",
+        thumbnailUrl: properties.Thumbnail?.files?.[0]?.file?.url || "/placeholder.svg",
+        videoUrl: properties["Video URL"]?.url || undefined,
+        description: properties.Description?.rich_text?.[0]?.plain_text || "",
+        credits: properties.Credits?.multi_select?.map((credit: { name: string }) => credit.name) || [],
+        stillImages: properties["Still Images"]?.files?.map((file: { file: { url: string } }) => file.file.url) || [],
+        category: (properties.Category?.select?.name as "Commercial" | "Documentary" | "Drone" | "Music Video" | "Corporate" | "Other") || "Other",
+        featured: properties.Featured?.checkbox || false,
+      }
+    })
+  } catch (error) {
+    console.error("Error fetching projects from Notion:", error)
+    return []
   }
 }

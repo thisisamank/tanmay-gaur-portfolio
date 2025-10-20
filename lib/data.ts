@@ -8,7 +8,7 @@ export interface Project {
   description: string
   credits: string[]
   stillImages: string[]
-  category?: string
+  category?: "Commercial" | "Documentary" | "Drone" | "Music Video" | "Corporate" | "Other"
 }
 
 export interface BlogPost {

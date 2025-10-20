@@ -16,6 +16,11 @@ NOTION_API_KEY=your-notion-api-key
 NOTION_DATABASE_ID=your-notion-database-id
 \`\`\`
 
+### Notion API (Portfolio Videos - Optional)
+\`\`\`
+NOTION_PROJECTS_DATABASE_ID=your-projects-database-id
+\`\`\`
+
 ### Site Configuration
 \`\`\`
 NEXT_PUBLIC_SITE_URL=https://yourdomain.com
@@ -47,7 +52,8 @@ Create a `.env.local` file in the project root:
 \`\`\`
 NEXT_PUBLIC_R2_PUBLIC_URL=https://pub-f3452781d9104571a0e9e383ef6905ee.r2.dev
 NOTION_API_KEY=your-key-here
-NOTION_DATABASE_ID=your-id-here
+NOTION_DATABASE_ID=your-blog-database-id
+NOTION_PROJECTS_DATABASE_ID=your-projects-database-id
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 \`\`\`
 
