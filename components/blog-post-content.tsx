@@ -1,0 +1,75 @@
+"use client"
+
+import Image from "next/image"
+import Link from "next/link"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft } from "lucide-react"
+import type { BlogPost } from "@/lib/types"
+
+interface BlogPostContentProps {
+  post: BlogPost & { blocks?: unknown[] }
+}
+
+export function BlogPostContent({ post }: BlogPostContentProps) {
+  return (
+    <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Back Button */}
+      <Link href="/blog" className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition mb-8">
+        <ChevronLeft className="w-4 h-4" />
+        Back to Blog
+      </Link>
+
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">{post.title}</h1>
+
+        <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
+          <time>
+            {new Date(post.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </time>
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex gap-2">
+              {post.tags.map((tag) => (
+                <Badge key={tag} variant="secondary">
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Featured Image */}
+      {post.thumbnail && (
+        <div className="relative h-96 md:h-[500px] rounded-lg overflow-hidden mb-12">
+          <Image src={post.thumbnail || "/placeholder.svg"} alt={post.title} fill className="object-cover" priority />
+        </div>
+      )}
+
+      {/* Excerpt */}
+      <p className="text-xl text-muted-foreground leading-relaxed mb-8">{post.excerpt}</p>
+
+      {/* Content */}
+      <div className="prose prose-invert max-w-none mb-12">
+        <p className="text-lg text-muted-foreground leading-relaxed">
+          Content from Notion blocks will be rendered here. This is a placeholder for the full blog post content.
+        </p>
+      </div>
+
+      {/* CTA */}
+      <div className="border-t border-border pt-12 text-center">
+        <p className="text-muted-foreground mb-6">Have a project in mind?</p>
+        <Link href="/contact">
+          <Button size="lg" className="bg-accent hover:bg-accent/90">
+            Get in Touch
+          </Button>
+        </Link>
+      </div>
+    </article>
+  )
+}
