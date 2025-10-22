@@ -108,7 +108,7 @@ export default function Home() {
             Multi-speciality Filmmaker / Media Producer
           </p>
           <p className="text-base md:text-lg text-white/80 mb-8 max-w-xl leading-relaxed">
-            "The indifference between risky and bold."
+            "The difference between risky and bold."
           </p>
 
           {/* Netflix-style action buttons */}
