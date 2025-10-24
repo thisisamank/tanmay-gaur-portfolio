@@ -1,11 +1,19 @@
 "use client"
 
-import { BlogSection } from "@/components/blog-section"
-import { NetflixVideoPlayer } from "@/components/netflix-video-player"
 import type { BlogPost, Project } from "@/lib/types"
 import { Info, Mail, Phone, Play } from "lucide-react"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import { useEffect, useState } from "react"
+
+// Lazy load heavy components for better initial performance
+const BlogSection = dynamic(() => import("@/components/blog-section").then(mod => ({ default: mod.BlogSection })), {
+  loading: () => <div className="py-20 text-center text-zinc-500">Loading...</div>
+})
+const NetflixVideoPlayer = dynamic(() => import("@/components/netflix-video-player").then(mod => ({ default: mod.NetflixVideoPlayer })), {
+  loading: () => <div className="py-20 text-center text-zinc-500">Loading videos...</div>,
+  ssr: false // Videos don't need SSR
+})
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("about")
@@ -91,11 +99,12 @@ export default function Home() {
             src="https://pub-f3452781d9104571a0e9e383ef6905ee.r2.dev/WhatsApp%20Image%202025-10-20%20at%2011.59.35%20PM.jpeg"
             alt="Tanmay Gaur"
             fill
-            className="object-cover will-change-auto"
+            className="object-cover"
             priority
-            quality={75}
+            quality={85}
             sizes="100vw"
-            unoptimized={true}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
           />
           {/* Netflix-style gradient overlays - more aggressive */}
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
@@ -226,8 +235,7 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 text-white">Portfolio</h2>
           <p className="text-sm md:text-base lg:text-lg text-zinc-400 mb-8 md:mb-10 max-w-3xl leading-relaxed">
-            Now, finally, what you're really here for, some of my top picks from the projects I've worked on. I suggest you read the blogs section after this, I guarantee you'll notice what I can achieve is far greater than what you've guessed so far.
-          </p>
+            Now, finally, what you're really here for, some of my top picks from among my works. Do read the descriptions!          </p>
           {projectsLoading ? (
             <div className="flex items-center justify-center py-20">
               <div className="flex flex-col items-center gap-4">

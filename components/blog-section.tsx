@@ -38,10 +38,7 @@ export function BlogSection({ posts }: BlogSectionProps) {
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     loading="lazy"
-                    quality={75}
-                    unoptimized={post.thumbnail?.includes('prod-files-secure.s3.us-west-2.amazonaws.com') ||
-                      post.thumbnail?.includes('r2.dev') ||
-                      post.thumbnail?.includes('upload.wikimedia.org')}
+                    quality={60}
                     priority={false}
                   />
 

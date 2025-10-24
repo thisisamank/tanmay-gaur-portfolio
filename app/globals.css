@@ -167,14 +167,26 @@
     animation: fadeIn 0.5s ease-out forwards;
   }
 
-  /* Netflix-style hover card scaling */
+  /* Netflix-style hover card scaling - Optimized with will-change */
   .netflix-card {
     transition: transform 0.3s ease-in-out, z-index 0s 0.15s;
+    will-change: transform;
   }
 
   .netflix-card:hover {
     transform: scale(1.05);
     z-index: 10;
+  }
+
+  /* Remove will-change after transition for performance */
+  @media (hover: hover) {
+    .netflix-card {
+      will-change: auto;
+    }
+
+    .netflix-card:hover {
+      will-change: transform;
+    }
   }
 
   /* Netflix-style shimmer loading */

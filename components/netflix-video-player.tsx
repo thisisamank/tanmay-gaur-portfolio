@@ -62,13 +62,16 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
     setIsDescriptionExpanded(false)
   }, [selectedIndex])
 
-  // Preload adjacent videos for faster switching
+  // Optimized: Only preload next video on user interaction (not automatically)
   useEffect(() => {
-    const preloadNextVideos = () => {
-      const nextIndex = (selectedIndex + 1) % projects.length
-      const prevIndex = selectedIndex === 0 ? projects.length - 1 : selectedIndex - 1
+    // Cleanup any existing prefetch links to avoid memory leaks
+    const existingPrefetch = document.querySelectorAll('link[rel="prefetch"][as="video"]')
+    existingPrefetch.forEach(link => link.remove())
 
-      // Preload next and previous videos
+    // Only preload if user has interacted (video is playing or was played)
+    if (isPlaying) {
+      const nextIndex = (selectedIndex + 1) % projects.length
+
       if (projects[nextIndex]?.videoUrl) {
         const nextVideo = document.createElement('link')
         nextVideo.rel = 'prefetch'
@@ -76,20 +79,8 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
         nextVideo.href = projects[nextIndex].videoUrl
         document.head.appendChild(nextVideo)
       }
-
-      if (projects[prevIndex]?.videoUrl) {
-        const prevVideo = document.createElement('link')
-        prevVideo.rel = 'prefetch'
-        prevVideo.as = 'video'
-        prevVideo.href = projects[prevIndex].videoUrl
-        document.head.appendChild(prevVideo)
-      }
     }
-
-    // Preload after a short delay to prioritize current video
-    const timer = setTimeout(preloadNextVideos, 2000)
-    return () => clearTimeout(timer)
-  }, [selectedIndex, projects])
+  }, [isPlaying, selectedIndex, projects])
 
   const handlePlayPause = async () => {
     if (!videoRef.current) return
@@ -395,7 +386,7 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
                     poster={project.thumbnailUrl || DEFAULT_THUMBNAIL}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     muted
-                    preload="metadata"
+                    preload="none"
                     playsInline
                   >
                     <source src={project.videoUrl} type="video/mp4" />
