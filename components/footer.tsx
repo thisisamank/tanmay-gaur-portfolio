@@ -1,5 +1,6 @@
 import { NAVIGATION_ITEMS } from "@/lib/constants"
 import { portfolioData } from "@/lib/data"
+import Image from "next/image"
 import Link from "next/link"
 
 export function Footer() {
@@ -11,7 +12,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <h3 className="text-2xl font-black text-red-600 mb-2 tracking-tighter">TG</h3>
+            <div className="relative w-12 h-12 mb-2">
+              <Image
+                src="/logo.png"
+                alt="TG Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
             <p className="text-zinc-400 text-sm">{portfolioData.bio.title}</p>
           </div>
 

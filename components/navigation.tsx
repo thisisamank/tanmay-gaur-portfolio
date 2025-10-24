@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 
@@ -18,8 +19,14 @@ export function Navigation() {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo - Netflix style */}
-          <Link href="/" className="text-2xl md:text-3xl font-black text-red-600 hover:text-red-500 transition-colors tracking-tighter">
-            TG
+          <Link href="/" className="relative w-10 h-10 md:w-12 md:h-12 hover:opacity-80 transition-opacity">
+            <Image
+              src="/logo.png"
+              alt="TG Logo"
+              fill
+              className="object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation - Netflix style */}
