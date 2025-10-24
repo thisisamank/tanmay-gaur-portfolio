@@ -31,7 +31,7 @@ self.addEventListener('fetch', (event) => {
     const url = event.request.url
     const isNotionS3 = url.includes('prod-files-secure.s3.us-west-2.amazonaws.com')
     const isR2 = url.includes('r2.dev')
-    
+
     // Handle image requests
     if (event.request.destination === 'image') {
         event.respondWith(
@@ -58,14 +58,28 @@ self.addEventListener('fetch', (event) => {
                         signal: AbortSignal.timeout(timeoutDuration)
                     }).then((networkResponse) => {
                         if (networkResponse.ok) {
+                            // Create a new Response with custom headers (can't modify original headers)
                             const responseToCache = networkResponse.clone()
-                            responseToCache.headers.set('sw-cache-time', Date.now().toString())
-                            cache.put(event.request, responseToCache)
+                            const headers = new Headers(responseToCache.headers)
+                            headers.set('sw-cache-time', Date.now().toString())
+
+                            const cachedResponse = new Response(responseToCache.body, {
+                                status: responseToCache.status,
+                                statusText: responseToCache.statusText,
+                                headers: headers
+                            })
+
+                            cache.put(event.request, cachedResponse)
                         }
                         return networkResponse
                     }).catch((error) => {
                         console.log('Fetch failed for image, trying cache:', error)
-                        return cache.match(event.request)
+                        return cache.match(event.request).then(cachedResponse => {
+                            return cachedResponse || new Response('Image not available', {
+                                status: 503,
+                                statusText: 'Service Unavailable'
+                            })
+                        })
                     })
                 })
             })
@@ -95,7 +109,17 @@ self.addEventListener('fetch', (event) => {
                         return networkResponse
                     }).catch((error) => {
                         console.log('Fetch failed for video, trying cache:', error)
-                        return cache.match(event.request)
+                        return cache.match(event.request).then(cachedResponse => {
+                            // Return cached response or a fallback
+                            if (cachedResponse) {
+                                return cachedResponse
+                            }
+                            // Return an error response instead of undefined
+                            return new Response('Video not available', {
+                                status: 503,
+                                statusText: 'Service Unavailable'
+                            })
+                        })
                     })
                 })
             })
