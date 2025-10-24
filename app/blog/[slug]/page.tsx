@@ -1,9 +1,9 @@
-import { Navigation } from "@/components/navigation"
-import { Footer } from "@/components/footer"
 import { BlogPostContent } from "@/components/blog-post-content"
+import { Footer } from "@/components/footer"
+import { Navigation } from "@/components/navigation"
 import { getBlogPostBySlug, getBlogPosts } from "@/lib/notion"
-import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>
@@ -59,7 +59,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     }
 
     return (
-      <main className="min-h-screen bg-background">
+      <main className="min-h-screen bg-black">
         <Navigation />
         <div className="pt-16">
           <BlogPostContent post={post} />

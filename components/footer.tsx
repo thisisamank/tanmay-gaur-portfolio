@@ -1,27 +1,27 @@
-import Link from "next/link"
-import { portfolioData } from "@/lib/data"
 import { NAVIGATION_ITEMS } from "@/lib/constants"
+import { portfolioData } from "@/lib/data"
+import Link from "next/link"
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-background border-t border-border py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-black border-t border-zinc-900 py-12 md:py-16">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
           <div>
-            <h3 className="text-xl font-bold text-accent mb-2">TG</h3>
-            <p className="text-muted-foreground text-sm">{portfolioData.bio.title}</p>
+            <h3 className="text-2xl font-black text-red-600 mb-2 tracking-tighter">TG</h3>
+            <p className="text-zinc-400 text-sm">{portfolioData.bio.title}</p>
           </div>
 
           {/* Navigation */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Navigation</h4>
+            <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Navigation</h4>
             <ul className="space-y-2">
               {NAVIGATION_ITEMS.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-muted-foreground hover:text-accent transition text-sm">
+                  <Link href={item.href} className="text-zinc-400 hover:text-white transition text-sm">
                     {item.label}
                   </Link>
                 </li>
@@ -31,12 +31,12 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold text-foreground mb-4">Contact</h4>
+            <h4 className="font-bold text-white mb-4 text-sm uppercase tracking-wider">Contact</h4>
             <ul className="space-y-2">
               <li>
                 <a
                   href={`mailto:${portfolioData.contact.email}`}
-                  className="text-muted-foreground hover:text-accent transition text-sm"
+                  className="text-zinc-400 hover:text-white transition text-sm"
                 >
                   {portfolioData.contact.email}
                 </a>
@@ -44,7 +44,7 @@ export function Footer() {
               <li>
                 <a
                   href={`tel:${portfolioData.contact.phone}`}
-                  className="text-muted-foreground hover:text-accent transition text-sm"
+                  className="text-zinc-400 hover:text-white transition text-sm"
                 >
                   {portfolioData.contact.phone}
                 </a>
@@ -54,7 +54,7 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-border pt-8 text-center text-muted-foreground text-sm">
+        <div className="border-t border-zinc-900 pt-8 text-center text-zinc-600 text-xs md:text-sm">
           <p>
             &copy; {currentYear} {portfolioData.bio.name}. All rights reserved.
           </p>

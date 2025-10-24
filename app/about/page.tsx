@@ -1,8 +1,8 @@
-import { Navigation } from "@/components/navigation"
-import { Footer } from "@/components/footer"
 import { AboutHero } from "@/components/about-hero"
-import { SkillsSection } from "@/components/skills-section"
 import { EmploymentSection } from "@/components/employment-section"
+import { Footer } from "@/components/footer"
+import { Navigation } from "@/components/navigation"
+import { SkillsSection } from "@/components/skills-section"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-black">
       <Navigation />
       <AboutHero />
       <SkillsSection />

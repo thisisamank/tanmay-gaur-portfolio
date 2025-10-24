@@ -14,21 +14,21 @@ export function Navigation() {
   ]
 
   return (
-    <nav className="fixed top-0 w-full bg-gradient-to-b from-black/80 via-black/40 to-transparent backdrop-blur-md z-50 transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="fixed top-0 w-full bg-gradient-to-b from-black via-black/95 to-transparent backdrop-blur-sm z-50 transition-all">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 lg:px-16">
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo - Netflix style */}
-          <Link href="/" className="text-2xl md:text-3xl font-bold text-accent hover:text-accent/80 transition-colors tracking-tight">
+          <Link href="/" className="text-2xl md:text-3xl font-black text-red-600 hover:text-red-500 transition-colors tracking-tighter">
             TG
           </Link>
 
           {/* Desktop Navigation - Netflix style */}
-          <div className="hidden md:flex gap-6 lg:gap-8">
+          <div className="hidden md:flex gap-5 lg:gap-7 items-center">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium text-white/80 hover:text-white transition-colors"
+                className="text-sm font-medium text-zinc-300 hover:text-white transition-colors"
               >
                 {item.label}
               </Link>
@@ -49,12 +49,12 @@ export function Navigation() {
 
         {/* Mobile Navigation - Netflix style */}
         {isOpen && (
-          <div className="md:hidden pb-4 space-y-1 bg-black/95 backdrop-blur-lg rounded-lg mt-2 p-4">
+          <div className="md:hidden pb-4 space-y-1 bg-zinc-900 backdrop-blur-lg rounded-lg mt-2 p-4 border border-zinc-800">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="block text-sm font-medium text-white/80 hover:text-white transition-colors py-3 px-2 hover:bg-white/5 rounded"
+                className="block text-sm font-medium text-zinc-300 hover:text-white transition-colors py-3 px-3 hover:bg-zinc-800 rounded"
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}

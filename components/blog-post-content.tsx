@@ -1,6 +1,5 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import type { BlogPost } from "@/lib/types"
 import { ChevronLeft } from "lucide-react"
@@ -13,19 +12,19 @@ interface BlogPostContentProps {
 
 export function BlogPostContent({ post }: BlogPostContentProps) {
   return (
-    <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Back Button */}
-      <Link href="/blog" className="inline-flex items-center gap-2 text-accent hover:text-accent/80 transition mb-8">
-        <ChevronLeft className="w-4 h-4" />
+    <article className="max-w-4xl mx-auto px-4 sm:px-6 md:px-12 lg:px-16 py-12">
+      {/* Back Button - Netflix style */}
+      <Link href="/blog" className="inline-flex items-center gap-2 text-white hover:text-zinc-300 transition mb-8 font-bold">
+        <ChevronLeft className="w-5 h-5" />
         Back to Blog
       </Link>
 
-      {/* Header */}
+      {/* Header - Netflix style */}
       <div className="mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 text-balance">{post.title}</h1>
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">{post.title}</h1>
 
-        <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
-          <time>
+        <div className="flex flex-wrap items-center gap-3 text-zinc-400">
+          <time className="font-medium">
             {new Date(post.date).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",
@@ -35,9 +34,9 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
           {post.tags && post.tags.length > 0 && (
             <div className="flex gap-2">
               {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary">
+                <span key={tag} className="px-2.5 py-1 bg-zinc-800 text-zinc-200 rounded text-xs font-bold uppercase tracking-wider border border-zinc-700">
                   {tag}
-                </Badge>
+                </span>
               ))}
             </div>
           )}
@@ -65,10 +64,10 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
         </div>
       )}
 
-      {/* Excerpt */}
-      <p className="text-xl text-muted-foreground leading-relaxed mb-8">{post.excerpt}</p>
+      {/* Excerpt - Netflix style */}
+      <p className="text-lg md:text-xl text-zinc-300 leading-relaxed mb-8">{post.excerpt}</p>
 
-      {/* Content */}
+      {/* Content - Netflix style */}
       <div className="prose prose-invert max-w-none mb-12">
         {post.blocks && post.blocks.length > 0 ? (
           post.blocks.map((block: any, index: number) => {
@@ -77,7 +76,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
               const text = block.paragraph?.rich_text?.map((t: any) => t.plain_text).join("") || ""
               if (!text) return null
               return (
-                <p key={block.id || index} className="text-lg text-muted-foreground leading-relaxed mb-6">
+                <p key={block.id || index} className="text-base md:text-lg text-zinc-300 leading-relaxed mb-6">
                   {text}
                 </p>
               )
@@ -86,7 +85,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
             if (block.type === "heading_1") {
               const text = block.heading_1?.rich_text?.map((t: any) => t.plain_text).join("") || ""
               return (
-                <h1 key={block.id || index} className="text-4xl font-bold text-foreground mb-6 mt-8">
+                <h1 key={block.id || index} className="text-3xl md:text-4xl font-bold text-white mb-6 mt-10">
                   {text}
                 </h1>
               )
@@ -95,7 +94,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
             if (block.type === "heading_2") {
               const text = block.heading_2?.rich_text?.map((t: any) => t.plain_text).join("") || ""
               return (
-                <h2 key={block.id || index} className="text-3xl font-bold text-foreground mb-4 mt-8">
+                <h2 key={block.id || index} className="text-2xl md:text-3xl font-bold text-white mb-4 mt-8">
                   {text}
                 </h2>
               )
@@ -104,7 +103,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
             if (block.type === "heading_3") {
               const text = block.heading_3?.rich_text?.map((t: any) => t.plain_text).join("") || ""
               return (
-                <h3 key={block.id || index} className="text-2xl font-bold text-foreground mb-4 mt-6">
+                <h3 key={block.id || index} className="text-xl md:text-2xl font-bold text-white mb-4 mt-6">
                   {text}
                 </h3>
               )
@@ -113,7 +112,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
             if (block.type === "bulleted_list_item") {
               const text = block.bulleted_list_item?.rich_text?.map((t: any) => t.plain_text).join("") || ""
               return (
-                <li key={block.id || index} className="text-lg text-muted-foreground leading-relaxed mb-2 ml-6 list-disc">
+                <li key={block.id || index} className="text-base md:text-lg text-zinc-300 leading-relaxed mb-2 ml-6 list-disc">
                   {text}
                 </li>
               )
@@ -122,7 +121,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
             if (block.type === "numbered_list_item") {
               const text = block.numbered_list_item?.rich_text?.map((t: any) => t.plain_text).join("") || ""
               return (
-                <li key={block.id || index} className="text-lg text-muted-foreground leading-relaxed mb-2 ml-6 list-decimal">
+                <li key={block.id || index} className="text-base md:text-lg text-zinc-300 leading-relaxed mb-2 ml-6 list-decimal">
                   {text}
                 </li>
               )
@@ -131,7 +130,7 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
             if (block.type === "quote") {
               const text = block.quote?.rich_text?.map((t: any) => t.plain_text).join("") || ""
               return (
-                <blockquote key={block.id || index} className="border-l-4 border-accent pl-6 py-2 my-6 italic text-muted-foreground">
+                <blockquote key={block.id || index} className="border-l-4 border-red-600 pl-6 py-2 my-6 italic text-zinc-300 bg-zinc-900/50 rounded-r">
                   {text}
                 </blockquote>
               )
@@ -140,8 +139,8 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
             if (block.type === "code") {
               const text = block.code?.rich_text?.map((t: any) => t.plain_text).join("") || ""
               return (
-                <pre key={block.id || index} className="bg-secondary/50 p-4 rounded-lg overflow-x-auto my-6">
-                  <code className="text-sm text-foreground">{text}</code>
+                <pre key={block.id || index} className="bg-zinc-900 p-4 rounded overflow-x-auto my-6 border border-zinc-800">
+                  <code className="text-sm text-zinc-300">{text}</code>
                 </pre>
               )
             }
@@ -178,17 +177,17 @@ export function BlogPostContent({ post }: BlogPostContentProps) {
             return null
           })
         ) : (
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-base md:text-lg text-zinc-300 leading-relaxed">
             {post.content || "No content available for this post."}
           </p>
         )}
       </div>
 
-      {/* CTA */}
-      <div className="border-t border-border pt-12 text-center">
-        <p className="text-muted-foreground mb-6">Have a project in mind?</p>
+      {/* CTA - Netflix style */}
+      <div className="border-t border-zinc-800 pt-12 text-center">
+        <p className="text-zinc-400 mb-6 text-lg">Have a project in mind?</p>
         <Link href="/#contact">
-          <Button size="lg" className="bg-accent hover:bg-accent/90">
+          <Button size="lg" className="bg-white hover:bg-white/90 text-black font-bold px-8 py-6 text-lg">
             Get in Touch
           </Button>
         </Link>

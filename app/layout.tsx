@@ -40,7 +40,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`font-sans antialiased bg-background text-foreground`}>
+      <body className={`font-sans antialiased bg-black text-foreground`}>
         {children}
         <Toaster />
         <Analytics />

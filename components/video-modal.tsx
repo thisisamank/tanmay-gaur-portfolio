@@ -106,10 +106,10 @@ export function VideoModal({ isOpen, onClose, title, url }: VideoModalProps) {
         onClick={(e) => e.stopPropagation()}
         onMouseMove={handleMouseMove}
       >
-        {/* Close button */}
+        {/* Close button - Netflix style */}
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 z-10 bg-black/60 hover:bg-black/80 p-2 rounded-full transition ${showControls ? "opacity-100" : "opacity-0"
+          className={`absolute top-4 right-4 z-10 bg-zinc-900/90 hover:bg-zinc-800 backdrop-blur-sm p-3 rounded-full transition-all border border-zinc-700 ${showControls ? "opacity-100" : "opacity-0"
             }`}
           title="Close (Esc)"
         >
@@ -117,7 +117,21 @@ export function VideoModal({ isOpen, onClose, title, url }: VideoModalProps) {
         </button>
 
         {/* Video */}
-        <video ref={videoRef} src={url} className="w-full h-full object-contain" onMouseMove={handleMouseMove} />
+        <video
+          ref={videoRef}
+          className="w-full h-full object-contain"
+          onMouseMove={handleMouseMove}
+          playsInline
+          preload="metadata"
+          onError={(e) => {
+            console.error("[v0] Modal video error:", e)
+            console.error("[v0] Video URL:", url)
+          }}
+        >
+          <source src={url} type="video/mp4" />
+          <source src={url} type="video/webm" />
+          Your browser does not support the video tag.
+        </video>
 
         {/* Controls */}
         <div
@@ -136,38 +150,38 @@ export function VideoModal({ isOpen, onClose, title, url }: VideoModalProps) {
                   videoRef.current.currentTime = (Number.parseFloat(e.target.value) / 100) * videoRef.current.duration
                 }
               }}
-              className="flex-1 h-1 bg-white/30 rounded cursor-pointer accent-accent"
+              className="flex-1 h-1 bg-zinc-600/50 rounded cursor-pointer accent-red-600"
             />
           </div>
 
-          {/* Control buttons */}
+          {/* Control buttons - Netflix style */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <button
                 onClick={handlePlayPause}
-                className="bg-accent hover:bg-accent/90 p-2 rounded-full transition"
+                className="bg-white hover:bg-white/90 p-3 rounded-full transition-all hover:scale-110"
                 title="Play/Pause (Space)"
               >
                 {isPlaying ? (
-                  <Pause size={20} className="text-white fill-white" />
+                  <Pause size={24} className="text-black" />
                 ) : (
-                  <Play size={20} className="text-white fill-white" />
+                  <Play size={24} className="text-black fill-black" />
                 )}
               </button>
               <button
                 onClick={handleMuteToggle}
-                className="bg-black/60 hover:bg-black/80 p-2 rounded-full transition"
+                className="bg-zinc-900/80 hover:bg-zinc-800 backdrop-blur-sm p-2.5 rounded-full transition-all hover:scale-110 border border-zinc-700"
                 title="Mute (M)"
               >
                 {isMuted ? <VolumeX size={20} className="text-white" /> : <Volume2 size={20} className="text-white" />}
               </button>
             </div>
 
-            <div className="text-white text-sm font-semibold flex-1 text-center">{title}</div>
+            <div className="text-white text-base font-bold flex-1 text-center">{title}</div>
 
             <button
               onClick={handleFullscreenToggle}
-              className="bg-black/60 hover:bg-black/80 p-2 rounded-full transition"
+              className="bg-zinc-900/80 hover:bg-zinc-800 backdrop-blur-sm p-2.5 rounded-full transition-all hover:scale-110 border border-zinc-700"
               title="Fullscreen (F)"
             >
               {isFullscreen ? (
@@ -179,7 +193,7 @@ export function VideoModal({ isOpen, onClose, title, url }: VideoModalProps) {
           </div>
 
           {/* Keyboard shortcuts hint */}
-          <div className="text-white/50 text-xs mt-4 text-center">
+          <div className="text-zinc-500 text-xs mt-4 text-center font-medium">
             Space: Play/Pause | M: Mute | F: Fullscreen | Esc: Close
           </div>
         </div>
