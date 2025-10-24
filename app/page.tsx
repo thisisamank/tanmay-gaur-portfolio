@@ -58,6 +58,7 @@ export default function Home() {
     "Motion Graphics",
     "Team Management",
     "Crisis Management",
+    "Generative AI",
   ]
 
   const employment = [
@@ -78,8 +79,8 @@ export default function Home() {
     },
   ]
 
-  // Filter projects that have video URLs
-  const videoProjects = projects.filter(project => project.videoUrl)
+  // Filter projects that have video URLs and are featured
+  const videoProjects = projects.filter(project => project.videoUrl && project.featured)
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -214,7 +215,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-3 text-white">Portfolio</h2>
           <p className="text-base md:text-lg text-white/70 mb-10 max-w-3xl leading-relaxed">
-            Now, finally, what you’re really here for, some of my top picks from the projects I’ve worked on. I suggest you read the blogs section after this, I guarantee you’ll notice what I can achieve is far greater than what you’ve guessed so far.          </p>
+            Now, finally, what you're really here for, some of my top picks from the projects I've worked on. I suggest you read the blogs section after this, I guarantee you'll notice what I can achieve is far greater than what you've guessed so far.          </p>
           {projectsLoading ? (
             <div className="flex items-center justify-center py-20">
               <div className="flex flex-col items-center gap-4">
@@ -227,7 +228,7 @@ export default function Home() {
           ) : (
             <div className="bg-white/5 border border-white/10 rounded-md p-8 text-center">
               <p className="text-white/60">
-                No video projects available. Add projects with video URLs to your Notion database.
+                No featured video projects available. Mark projects as featured and add video URLs in your Notion database.
               </p>
             </div>
           )}

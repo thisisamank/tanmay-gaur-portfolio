@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { X, Play, Pause, Volume2, VolumeX, Maximize2, Minimize2 } from "lucide-react"
+import { Maximize2, Minimize2, Pause, Play, Volume2, VolumeX, X } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
 
 interface VideoModalProps {
   isOpen: boolean
@@ -109,9 +109,8 @@ export function VideoModal({ isOpen, onClose, title, url }: VideoModalProps) {
         {/* Close button */}
         <button
           onClick={onClose}
-          className={`absolute top-4 right-4 z-10 bg-black/60 hover:bg-black/80 p-2 rounded-full transition ${
-            showControls ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute top-4 right-4 z-10 bg-black/60 hover:bg-black/80 p-2 rounded-full transition ${showControls ? "opacity-100" : "opacity-0"
+            }`}
           title="Close (Esc)"
         >
           <X size={24} className="text-white" />
@@ -122,9 +121,8 @@ export function VideoModal({ isOpen, onClose, title, url }: VideoModalProps) {
 
         {/* Controls */}
         <div
-          className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/50 to-transparent p-6 transition-opacity duration-300 ${
-            showControls ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/50 to-transparent p-6 transition-opacity duration-300 ${showControls ? "opacity-100" : "opacity-0"
+            }`}
         >
           {/* Progress bar */}
           <div className="mb-4 flex items-center gap-2">

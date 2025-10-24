@@ -26,13 +26,14 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Unregister any existing service worker
+              // Register service worker for caching images and videos
               if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                  for(let registration of registrations) {
-                    registration.unregister();
-                    console.log('Service worker unregistered');
-                  }
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('Service Worker registered successfully:', registration.scope);
+                  }).catch(function(error) {
+                    console.log('Service Worker registration failed:', error);
+                  });
                 });
               }
             `,

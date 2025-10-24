@@ -175,7 +175,7 @@ export async function getPortfolioProjects() {
   try {
     const data = await queryNotionDatabase(databaseId)
 
-    return data.results.map((item: NotionDatabaseItem) => {
+    const projects = data.results.map((item: NotionDatabaseItem) => {
       const properties = item.properties as any
       return {
         id: item.id,
@@ -190,8 +190,12 @@ export async function getPortfolioProjects() {
         stillImages: properties["Still Images"]?.files?.map((file: { file: { url: string } }) => file.file.url) || [],
         category: (properties.Category?.select?.name as "Commercial" | "Documentary" | "Drone" | "Music Video" | "Corporate" | "Other") || "Other",
         featured: properties.Featured?.checkbox || false,
+        sNo: properties.SNo?.number || 0,
       }
     })
+
+    // Sort by SNo field (ascending)
+    return projects.sort((a: any, b: any) => (a.sNo || 0) - (b.sNo || 0))
   } catch (error) {
     console.error("Error fetching projects from Notion:", error)
     return []

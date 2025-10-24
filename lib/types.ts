@@ -9,6 +9,8 @@ export interface Project {
   credits: string[]
   stillImages: string[]
   category?: "Commercial" | "Documentary" | "Drone" | "Music Video" | "Corporate" | "Other"
+  featured?: boolean
+  sNo?: number
 }
 
 export interface BlogPost {

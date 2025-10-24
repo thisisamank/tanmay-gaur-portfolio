@@ -28,14 +28,14 @@ export function BlogSection({ posts }: BlogSectionProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {displayPosts.map((post) => (
             <Link key={post.id} href={`/blog/${post.slug}`}>
-              <article className="group cursor-pointer transition-all duration-200">
+              <article className="group cursor-pointer transition-all duration-300 hover:scale-105">
                 {/* Image */}
-                <div className="relative aspect-video bg-black rounded-md overflow-hidden mb-3">
+                <div className="relative aspect-video bg-black rounded-md overflow-hidden mb-3 shadow-lg group-hover:shadow-2xl transition-shadow">
                   <Image
                     src={post.thumbnail || "/placeholder.svg?height=192&width=400&query=blog"}
                     alt={post.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover group-hover:scale-110 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     loading="lazy"
                     quality={75}
@@ -45,13 +45,13 @@ export function BlogSection({ posts }: BlogSectionProps) {
                     priority={false}
                   />
 
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
+                  {/* Hover overlay with gradient - Netflix style */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
 
                 {/* Content */}
                 <div className="px-1">
-                  <h3 className="text-base font-semibold text-white group-hover:text-white/90 transition mb-2 line-clamp-2">
+                  <h3 className="text-base font-semibold text-white group-hover:text-white transition mb-2 line-clamp-2">
                     {post.title}
                   </h3>
 

@@ -17,9 +17,10 @@ const DEFAULT_THUMBNAIL =
 export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(true)
+  const [isMuted, setIsMuted] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   const selectedProject = projects[selectedIndex]
@@ -46,7 +47,38 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
       videoRef.current.load() // Reload video to show poster
       setIsPlaying(false)
     }
+    // Reset description expansion when changing videos
+    setIsDescriptionExpanded(false)
   }, [selectedIndex])
+
+  // Preload adjacent videos for faster switching
+  useEffect(() => {
+    const preloadNextVideos = () => {
+      const nextIndex = (selectedIndex + 1) % projects.length
+      const prevIndex = selectedIndex === 0 ? projects.length - 1 : selectedIndex - 1
+      
+      // Preload next and previous videos
+      if (projects[nextIndex]?.videoUrl) {
+        const nextVideo = document.createElement('link')
+        nextVideo.rel = 'prefetch'
+        nextVideo.as = 'video'
+        nextVideo.href = projects[nextIndex].videoUrl
+        document.head.appendChild(nextVideo)
+      }
+      
+      if (projects[prevIndex]?.videoUrl) {
+        const prevVideo = document.createElement('link')
+        prevVideo.rel = 'prefetch'
+        prevVideo.as = 'video'
+        prevVideo.href = projects[prevIndex].videoUrl
+        document.head.appendChild(prevVideo)
+      }
+    }
+
+    // Preload after a short delay to prioritize current video
+    const timer = setTimeout(preloadNextVideos, 2000)
+    return () => clearTimeout(timer)
+  }, [selectedIndex, projects])
 
   const handlePlayPause = async () => {
     if (!videoRef.current) return
@@ -117,8 +149,9 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
                 onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
                 onClick={handlePlayPause}
-                preload="metadata"
+                preload="auto"
                 playsInline
+                crossOrigin="anonymous"
               />
 
               {/* Netflix-style gradient overlays */}
@@ -223,10 +256,35 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
               </div>
             </div>
 
-            {/* Description */}
+            {/* Description with Read More */}
             {selectedProject.description && (
-              <div>
-                <p className="text-white/80 text-base leading-relaxed">{selectedProject.description}</p>
+              <div className="overflow-hidden">
+                <p className={`text-white/80 text-base leading-relaxed transition-all duration-300 ${isDescriptionExpanded ? '' : 'line-clamp-3'
+                  }`}>
+                  {selectedProject.description}
+                </p>
+                {selectedProject.description.length > 150 && (
+                  <button
+                    onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
+                    className="text-accent hover:text-accent/80 text-sm font-medium mt-2 transition-colors inline-flex items-center gap-1"
+                  >
+                    {isDescriptionExpanded ? (
+                      <>
+                        Read Less
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                        </svg>
+                      </>
+                    ) : (
+                      <>
+                        Read More
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
             )}
 
@@ -282,8 +340,9 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
                     poster={project.thumbnailUrl || DEFAULT_THUMBNAIL}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     muted
-                    preload="metadata"
+                    preload="auto"
                     playsInline
+                    crossOrigin="anonymous"
                   />
 
                   {/* Overlay with Play icon */}

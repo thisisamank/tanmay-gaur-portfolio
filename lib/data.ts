@@ -50,6 +50,7 @@ export const portfolioData = {
     "Motion Graphics",
     "Team Management",
     "Crisis Management",
+    "Generative AI",
   ],
   employment: [
     {
