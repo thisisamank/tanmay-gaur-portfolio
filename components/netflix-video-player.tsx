@@ -23,6 +23,7 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const [videoError, setVideoError] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const playerContainerRef = useRef<HTMLDivElement>(null)
 
   const selectedProject = projects[selectedIndex]
 
@@ -49,7 +50,7 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
     return () => video.removeEventListener("timeupdate", updateProgress)
   }, [])
 
-  // Pause video when switching to a different video
+  // Pause video when switching to a different video and scroll to player on mobile
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.pause()
@@ -60,6 +61,28 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
     }
     // Reset description expansion when changing videos
     setIsDescriptionExpanded(false)
+
+    // Scroll to player on mobile/tablet when video changes
+    if (playerContainerRef.current && typeof window !== 'undefined') {
+      // Only auto-scroll on smaller screens (mobile/tablet)
+      if (window.innerWidth < 1024) {
+        // Small delay to ensure DOM is updated
+        setTimeout(() => {
+          const element = playerContainerRef.current
+          if (element) {
+            // Get element position
+            const elementPosition = element.getBoundingClientRect().top + window.scrollY
+            // Offset for fixed navigation (80px for nav height)
+            const offsetPosition = elementPosition - 100
+            
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth'
+            })
+          }
+        }, 100)
+      }
+    }
   }, [selectedIndex])
 
   // Optimized: Only preload next video on user interaction (not automatically)
@@ -148,7 +171,7 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
     <>
       <div className="space-y-8 md:space-y-12">
         {/* Featured Video Player and Info */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div ref={playerContainerRef} className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Video Player - Takes 2 columns */}
           <div className="lg:col-span-2 relative group">
             {/* Main Video Container */}
