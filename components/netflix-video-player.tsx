@@ -5,7 +5,6 @@ import type React from "react"
 import type { Project } from "@/lib/types"
 import { ChevronLeft, ChevronRight, Maximize, Pause, Play, Volume2, VolumeX } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import { VideoModal } from "./video-modal"
 
 interface NetflixVideoPlayerProps {
   projects: Project[]
@@ -18,10 +17,10 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
   const [progress, setProgress] = useState(0)
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
   const [videoError, setVideoError] = useState(false)
+  const [isFullscreen, setIsFullscreen] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const playerContainerRef = useRef<HTMLDivElement>(null)
 
@@ -136,6 +135,34 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
     }
   }
 
+  const handleFullscreen = async () => {
+    const container = playerContainerRef.current?.querySelector('.video-container') as HTMLElement
+    if (!container) return
+
+    try {
+      // Use native fullscreen API on the container element (not video directly)
+      if (!document.fullscreenElement) {
+        await container.requestFullscreen()
+        setIsFullscreen(true)
+      } else {
+        await document.exitFullscreen()
+        setIsFullscreen(false)
+      }
+    } catch (error) {
+      console.error("Fullscreen error:", error)
+    }
+  }
+
+  // Listen for fullscreen changes (including ESC key)
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement)
+    }
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange)
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange)
+  }, [])
+
   const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (videoRef.current) {
       const rect = e.currentTarget.getBoundingClientRect()
@@ -172,7 +199,7 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
           {/* Video Player - Takes 2 columns */}
           <div className="lg:col-span-2 relative group">
             {/* Main Video Container */}
-            <div className="relative aspect-video bg-black rounded overflow-hidden shadow-2xl">
+            <div className="video-container relative aspect-video bg-black rounded overflow-hidden shadow-2xl">
               <video
                 ref={videoRef}
                 poster={selectedProject.thumbnailUrl || DEFAULT_THUMBNAIL}
@@ -196,6 +223,7 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
                 preload="metadata"
                 playsInline
                 controls={false}
+                controlsList="nodownload"
               >
                 <source src={selectedProject.videoUrl!} type="video/mp4" />
                 <source src={selectedProject.videoUrl!} type="video/webm" />
@@ -207,34 +235,34 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
 
               {/* Clickable overlay for play/pause or error message */}
               {videoError ? (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-10">
-                  <div className="text-center p-6 max-w-md">
-                    <p className="text-white text-lg font-bold mb-2">Unable to load video</p>
-                    <p className="text-zinc-400 text-sm">
-                      The video source may not be available. Please check the video URL or try another project.
-                    </p>
-                  </div>
-                </div>
-              ) : !isPlaying ? (
-                <button
-                  onClick={handlePlayPause}
-                  className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/20 transition-all duration-300 cursor-pointer group/play z-10"
-                  aria-label="Play video"
-                >
-                  <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-sm border-2 border-white/80 group-hover/play:border-white group-hover/play:scale-110 transition-all">
-                    <Play size={40} className="text-white fill-white ml-1" />
-                  </div>
-                </button>
-              ) : (
-                <button
-                  onClick={handlePlayPause}
-                  className="absolute inset-0 cursor-pointer z-10 opacity-0"
-                  aria-label="Pause video"
-                />
-              )}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-10">
+                      <div className="text-center p-6 max-w-md">
+                        <p className="text-white text-lg font-bold mb-2">Unable to load video</p>
+                        <p className="text-zinc-400 text-sm">
+                          The video source may not be available. Please check the video URL or try another project.
+                        </p>
+                      </div>
+                    </div>
+                  ) : !isPlaying ? (
+                    <button
+                      onClick={handlePlayPause}
+                      className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/20 transition-all duration-300 cursor-pointer group/play z-10"
+                      aria-label="Play video"
+                    >
+                      <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center rounded-full bg-black/50 backdrop-blur-sm border-2 border-white/80 group-hover/play:border-white group-hover/play:scale-110 transition-all">
+                        <Play size={40} className="text-white fill-white ml-1" />
+                      </div>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handlePlayPause}
+                      className="absolute inset-0 cursor-pointer z-10 opacity-0"
+                      aria-label="Pause video"
+                    />
+                  )}
 
               {/* Controls - visible on hover - Netflix style */}
-              <div className="absolute inset-0 flex flex-col justify-between p-4 md:p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-20">
+                <div className="absolute inset-0 flex flex-col justify-between p-4 md:p-6 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none z-20">
                 {/* Top controls - Action buttons only */}
                 <div className="flex justify-end gap-2 pointer-events-auto">
                   <button
@@ -249,7 +277,7 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
                     )}
                   </button>
                   <button
-                    onClick={() => setIsModalOpen(true)}
+                    onClick={handleFullscreen}
                     className="bg-zinc-900/80 hover:bg-zinc-800 backdrop-blur-sm p-2.5 md:p-3 rounded-full transition-all hover:scale-110 border border-zinc-700"
                     title="Fullscreen"
                   >
@@ -446,13 +474,6 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
           </div>
         </div>
       </div>
-
-      <VideoModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title={selectedProject.title}
-        url={selectedProject.videoUrl!}
-      />
     </>
   )
 }
