@@ -62,26 +62,23 @@ export function NetflixVideoPlayer({ projects }: NetflixVideoPlayerProps) {
     // Reset description expansion when changing videos
     setIsDescriptionExpanded(false)
 
-    // Scroll to player on mobile/tablet when video changes
+    // Scroll to player when video changes (all devices)
     if (playerContainerRef.current && typeof window !== 'undefined') {
-      // Only auto-scroll on smaller screens (mobile/tablet)
-      if (window.innerWidth < 1024) {
-        // Small delay to ensure DOM is updated
-        setTimeout(() => {
-          const element = playerContainerRef.current
-          if (element) {
-            // Get element position
-            const elementPosition = element.getBoundingClientRect().top + window.scrollY
-            // Offset for fixed navigation (80px for nav height)
-            const offsetPosition = elementPosition - 100
-            
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: 'smooth'
-            })
-          }
-        }, 100)
-      }
+      // Small delay to ensure DOM is updated
+      setTimeout(() => {
+        const element = playerContainerRef.current
+        if (element) {
+          // Get element position
+          const elementPosition = element.getBoundingClientRect().top + window.scrollY
+          // Offset for fixed navigation (100px for nav height + padding)
+          const offsetPosition = elementPosition - 100
+          
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          })
+        }
+      }, 100)
     }
   }, [selectedIndex])
 
