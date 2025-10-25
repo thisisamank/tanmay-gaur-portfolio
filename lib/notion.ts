@@ -119,7 +119,15 @@ export async function getBlogPosts() {
     return []
   }
 
-  const data = await queryNotionDatabase(databaseId)
+  // Filter to only show published blog posts
+  const filter = {
+    property: "Published",
+    checkbox: {
+      equals: true,
+    },
+  }
+
+  const data = await queryNotionDatabase(databaseId, filter)
 
   return data.results.map((item: NotionDatabaseItem) => ({
     id: item.id,

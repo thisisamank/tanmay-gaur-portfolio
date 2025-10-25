@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   description: "Thoughts on filmmaking, production, and creative storytelling.",
 }
 
+// Revalidate every 60 seconds to fetch fresh blog posts
+export const revalidate = 60
+
 export default async function BlogPage() {
   let posts = []
   let error = null
